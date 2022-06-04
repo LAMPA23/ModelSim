@@ -27,7 +27,7 @@ always@* begin
 				default: o_aluControl = 4'bxxxx;
 			 endcase
 		end
-		2'b01: begin	// I_type
+		2'b01: begin	// I-type
 			case (i_func)
 				6'h20: o_aluControl = 4'bxxxx;
 				default: o_aluControl = 4'bxxxx;
