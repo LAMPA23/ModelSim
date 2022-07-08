@@ -45,17 +45,4 @@ initial begin
 end
 
 
-endmodule 
-
-
-
-/*
-
-initial begin
-	i_aluOp = 0;
-	forever #(3*t) begin
-		i_aluOp = i_aluOp + 1;
-	end
-end
-
-*/
+endmodule
