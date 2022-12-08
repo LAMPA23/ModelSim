@@ -13,12 +13,12 @@ module alu(
 	SUB = 3, 
 	SLT = 4, 
 	NOR = 5,
-    XOR = 6; 
+   	XOR = 6; 
 	
 	input       [31:0]  i_op1, i_op2;
 	input       [5:0]   i_control;
 	output reg  [31:0]  o_result;
-	output reg          o_zf;
+	output wire         o_zf;
 
 	assign o_zf = ~|o_result;
 

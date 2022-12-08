@@ -1,6 +1,14 @@
-module core(i_clk);
+module main_core(
+		i_clk, 
+		i_uart_rst, 
+		uart_out,
+		alu_out
+	);
 
-    input i_clk;
+    input i_clk, i_uart_rst;
+	output [7:0] uart_out;
+	output [31:0] alu_out;
+
 
 	wire reg_file_write_en; 	// enable write from ram ro reg
 	wire mux_reg_dst_ctrl;		// mux control
@@ -38,6 +46,8 @@ module core(i_clk);
 	wire [32:0] wire_32_10; // mux pc_src control 
 	wire [32:0] wire_32_11;	// 
 	wire [32:0] wire_32_12;	// from pc_reg->o_data to pc_adder->i_data and rom->i_addr
+
+	assign alu_out = wire_32_3;
 
 	main_control main_control_inst(
 		.i_instr_code(wire_32_6[31:26]),//  from Inst_mem->{31:26, 5:0}
@@ -147,6 +157,42 @@ module core(i_clk);
         .i_imm26(wire_32_6[25:0]),
         .o_mux_pc_src(wire_1_0),
         .o_pc30(wire_30_2)
+	);
+
+
+
+
+
+	///// RGR
+
+	wire start;
+	wire uart_data;
+
+	wire [31:0] addres;
+	wire [31:0] data;
+
+	uart_mem uart_mem_inst(
+		.i_addres_read(addres),
+		.i_addres_write(wire_32_3), 
+        .i_write_en(write_mem_ram_en),	
+		.i_data(wire_32_8),
+        .o_start(start),
+		.o_data(data)
+	);
+
+	uart_sender uart_sender_inst(
+		.i_clk(i_clk),  
+		.i_start(start),
+		.i_data(data), 
+		.o_read_addres(addres),
+		.o_data(uart_data)
+	);
+
+	uart_receiver uart_receiver_inst(
+		.i_clk(i_clk),
+		.i_rst(i_uart_rst),
+		.i_data(uart_data),
+		.o_data(uart_out)
 	);
 
 endmodule 

@@ -20,7 +20,7 @@ module reg_file(
     initial begin
         Registers[0] = 0;
         for(i=1; i<=31; i=i+1) begin
-            Registers[i] = $random % 8 + 8;
+            Registers[i] = 0; //$random % 8 + 8;
         end
     end
 

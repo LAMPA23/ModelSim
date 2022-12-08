@@ -7,13 +7,21 @@ module tb_sim();
 	//initial code_help = {6'd0, 5'd5, 5'd4, 5'd1, 5'd0, 6'd42}; // I use these for create commands code
 	initial begin 
 	 	# (t)
-		code_help = {6'd8, 5'd0, 5'd6, 16'd1}; 
+		code_help = {6'd43, 5'd0, 5'd0, 16'd287}; 
+		# (t)
+		code_help = {6'd8, 5'd0, 5'd1, 16'd1}; 
+		# (t)
+		code_help = {6'd2, 26'd1};
 	end
 	//initial code_help = {6'd2, 26'd2}; // I use these for create commands code
 
 	reg clk;
+	reg rst;
 	
-	core core_inst(.i_clk(clk));
+	main_core main_core_inst(
+		.i_clk(clk),
+		.i_uart_rst(rst)
+	);
 
 	initial begin
 		clk = 0;
@@ -21,9 +29,12 @@ module tb_sim();
 			clk = ~clk;
 		end
 	end
+	initial begin
+		rst = 0;
+	end
 
 	initial begin
-		#(t*20) $stop;
+		#(t*1000) $stop;
 	end
 
 endmodule 
@@ -101,5 +112,37 @@ endmodule
 
 	-----
 
-	08000003 - Op = 2 | Imm = 3
+	08000003 - Op = 2 | Imm = 4
+
+
+
+		New commands 
+	
+		all commands
+	8c040000
+	8c050001
+	8c060002
+	00a4082a
+	10200003
+	00852020
+	00852822
+	00852022
+	00c5082a
+	10200004
+	00a62820
+	00a63022
+	00a62822
+	00a4082a
+	10200003
+	00852020
+	00852822
+	00852022
+	20060001
+	08000004
+	
+*/
+
+/*
+			RGR
+	ac00011f - Op = 43| Rs = 0 | Rt = 0 | Imm = 287
 */

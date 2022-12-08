@@ -17,14 +17,17 @@ module ram(
 
 	reg [DATA_WIDTH-1:0] RAM [ADDR_WIDTH-1:0];
 
+	initial $readmemh("ram_init.dat", RAM);
+	
+	/*
 	integer i;
 
 	initial begin
 		for ( i = 0; i < ADDR_WIDTH; i = i + 1 ) begin
-			RAM[i] = $random % 16;
+			RAM[i] = 0; //$random % 16;
 		end
 	end
-
+	*/
 
 	always@(*) begin
 		if(i_read_en) o_data = RAM[i_addr];
